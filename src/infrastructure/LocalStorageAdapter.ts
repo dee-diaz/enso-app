@@ -1,9 +1,8 @@
 // localStorage implementation
-
 import StorageInterface from './StorageInterface';
 
 class LocalStorageAdapter extends StorageInterface {
-  get(key) {
+  get(key: string): unknown | null {
     try {
       const data = localStorage.getItem(key);
       return data ? JSON.parse(data) : null;
@@ -13,7 +12,7 @@ class LocalStorageAdapter extends StorageInterface {
     }
   }
 
-  save(key, value) {
+  save(key: string, value: unknown): void {
     try {
       localStorage.setItem(key, JSON.stringify(value));
     } catch (error) {
@@ -21,7 +20,7 @@ class LocalStorageAdapter extends StorageInterface {
     }
   }
 
-  remove(key) {
+  remove(key: string): void {
     try {
       localStorage.removeItem(key);
     } catch (error) {
