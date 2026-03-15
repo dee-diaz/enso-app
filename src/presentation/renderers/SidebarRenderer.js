@@ -1,4 +1,4 @@
-import { DEFAULT_LISTS, LIST_TYPE } from '../../utils/Constants';
+import { DEFAULT_LISTS, LIST_TYPE } from '../../utils/Constants.ts';
 import logoSvg from '../../assets/img/logo.svg';
 import iconSidebar from '../../assets/img/icon-sidebar.svg';
 

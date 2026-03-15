@@ -1,5 +1,5 @@
 import { createDate } from './Task';
-import { LIST_COLORS } from '../utils/Constants';
+import { LIST_COLORS } from '../utils/Constants.ts';
 
 class List {
   constructor(title, color) {

@@ -1,4 +1,4 @@
-import { PRIORITY } from '../../utils/Constants';
+import { PRIORITY } from '../../utils/Constants.ts';
 import ValidationService from '../../services/ValidationService';
 
 // Form interaction management

@@ -5,7 +5,7 @@ import SidebarRenderer from './presentation/renderers/SidebarRenderer';
 import ModalRenderer from './presentation/renderers/ModalRenderer';
 import ModalHandler from './presentation/handlers/ModalHandler';
 import FormHandler from './presentation/handlers/FormHandler';
-import { DEFAULT_LISTS, customLists, LIST_TYPE } from './utils/Constants';
+import { DEFAULT_LISTS, customLists, LIST_TYPE } from './utils/Constants.ts';
 import TaskRenderer from './presentation/renderers/TaskRenderer';
 import initDatePickers from './presentation/components/Calendar';
 import initDropdowns from './presentation/components/dropdowns';

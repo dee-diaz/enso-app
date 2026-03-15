@@ -1,6 +1,6 @@
 // CRUD operations, data management
 import Task from './Task';
-import { DEFAULT_LISTS } from '../utils/Constants';
+import { DEFAULT_LISTS } from '../utils/Constants.ts';
 import { format } from 'date-fns';
 
 class TaskManager {

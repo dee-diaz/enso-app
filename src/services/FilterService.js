@@ -1,5 +1,5 @@
 // Translates UI filters → business queries
-import { DEFAULT_LISTS } from '../utils/Constants';
+import { DEFAULT_LISTS } from '../utils/Constants.ts';
 
 class FilterService {
   static filterByList(tasks, listName) {

@@ -1,5 +1,5 @@
 // Reusable priority selector UI component
-import { PRIORITY } from '../../utils/Constants';
+import { PRIORITY } from '../../utils/Constants.ts';
 
 function createDropdown(inputId, customListArr) {
   const dropdownContainer = document.createElement('div');

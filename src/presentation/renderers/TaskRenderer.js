@@ -1,4 +1,4 @@
-import { DEFAULT_LISTS, PRIORITY } from '../../utils/Constants';
+import { DEFAULT_LISTS, PRIORITY } from '../../utils/Constants.ts';
 import { format, parse, isBefore, startOfToday } from 'date-fns';
 import FilterService from '../../services/FilterService';
 
