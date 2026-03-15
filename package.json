@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/dee-diaz/task-management-app.git"
+    "url": "git+https://github.com/dee-diaz/enso-app.git"
   },
   "author": "Diana Diaz",
   "license": "ISC",
@@ -24,6 +24,7 @@
     "html-webpack-plugin": "^5.6.4",
     "prettier": "3.6.2",
     "style-loader": "^4.0.0",
+    "typescript": "^5.9.3",
     "webpack": "^5.101.3",
     "webpack-cli": "^6.0.1",
     "webpack-dev-server": "^5.2.2",
