@@ -3,9 +3,9 @@
  */
 
 abstract class StorageInterface {
-  abstract get(key: string): unknown | null;
+  abstract get<T>(key: string): T | null;
 
-  abstract save(key: string, value: unknown): void;
+  abstract save<T>(key: string, value: T): void;
 
   abstract remove(key: string): void;
 }

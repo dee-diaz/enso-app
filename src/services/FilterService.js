@@ -5,12 +5,12 @@ class FilterService {
   static filterByList(tasks, listName) {
     let filteredList;
     if (listName === DEFAULT_LISTS.COMPLETED.title) {
-      filteredList = tasks.filter((task) => task._lists.includes(listName));
+      filteredList = tasks.filter((task) => task.lists.includes(listName));
     } else {
       filteredList = tasks.filter(
         (task) =>
-          task._lists.includes(listName) &&
-          !task._lists.includes(DEFAULT_LISTS.COMPLETED.title),
+          task.lists.includes(listName) &&
+          !task.lists.includes(DEFAULT_LISTS.COMPLETED.title),
       );
     }
     return filteredList;
@@ -18,7 +18,7 @@ class FilterService {
 
   static defineCustomList(task, customListsArr = []) {
     if (!Array.isArray(customListsArr)) return null;
-    const taskListArr = task._lists || [];
+    const taskListArr = task.lists || [];
     const customListTitles = customListsArr.map((item) => item.title);
     const customList = taskListArr.filter((item) =>
       customListTitles.includes(item),

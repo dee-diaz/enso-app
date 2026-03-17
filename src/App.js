@@ -5,7 +5,7 @@ import SidebarRenderer from './presentation/renderers/SidebarRenderer';
 import ModalRenderer from './presentation/renderers/ModalRenderer';
 import ModalHandler from './presentation/handlers/ModalHandler';
 import FormHandler from './presentation/handlers/FormHandler';
-import { DEFAULT_LISTS, customLists, LIST_TYPE } from './utils/Constants.ts';
+import { DEFAULT_LISTS, customLists, LIST_TYPE } from './utils/Constants';
 import TaskRenderer from './presentation/renderers/TaskRenderer';
 import initDatePickers from './presentation/components/Calendar';
 import initDropdowns from './presentation/components/dropdowns';
@@ -21,7 +21,7 @@ class App {
     this.listManager = new ListManager(this.storage);
     this.taskManager = new TaskManager(this.storage, this.listManager);
     this.firstStart = this.checkFirstStart();
-    this.userName;
+    this.userName = undefined;
     this.container = document.querySelector('#content');
     this.sidebar = new SidebarRenderer(this.container, '.sidebar');
     this.createInitialCustomLists();
@@ -34,7 +34,7 @@ class App {
     this.form = document.querySelector('#form-task');
     this.formHandler = new FormHandler(this.form);
     this.bindEvents();
-    this.lastClickedTaskId;
+    this.lastClickedTaskId = undefined;
   }
 
   checkFirstStart() {
