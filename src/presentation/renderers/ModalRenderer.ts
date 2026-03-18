@@ -7,12 +7,14 @@ import iconCheckCircle from '../../assets/img/icon-check-circle.svg';
 import iconTrash from '../../assets/img/icon-trash.svg';
 
 class ModalRenderer {
-  constructor(container) {
+  container: HTMLDivElement;
+
+  constructor(container: HTMLDivElement) {
     this.container = container;
     this.createTaskModal();
   }
 
-  showOnboardingModal() {
+  showOnboardingModal(): void {
     const modal = document.createElement('dialog');
     modal.id = 'modal-start';
     const img = document.createElement('img');
@@ -44,8 +46,9 @@ class ModalRenderer {
     modal.showModal();
   }
 
-  renderOnboardingSecondStep() {
+  renderOnboardingSecondStep(): void {
     const modal = document.querySelector('#modal-start');
+    if (!(modal instanceof HTMLDialogElement)) return;
     modal.innerHTML = '';
 
     const img = document.createElement('img');
@@ -96,13 +99,15 @@ class ModalRenderer {
     modal.appendChild(pagination);
   }
 
-  closeOnboardingModal() {
+  closeOnboardingModal(): void {
     const modal = document.querySelector('#modal-start');
+    if (!(modal instanceof HTMLDialogElement)) return;
     modal.remove();
   }
 
-  createTaskModal() {
+  createTaskModal(): void {
     const body = document.querySelector('body');
+    if (!body) return;
     const modal = document.createElement('dialog');
     modal.id = 'modal-task';
 
@@ -123,8 +128,9 @@ class ModalRenderer {
     this.renderTaskForm();
   }
 
-  renderTaskForm() {
+  renderTaskForm(): void {
     const modal = document.querySelector('#modal-task');
+    if (!(modal instanceof HTMLDialogElement)) return;
     const form = document.createElement('form');
     form.className = 'form-task';
     form.id = 'form-task';
@@ -206,9 +212,11 @@ class ModalRenderer {
     modal.appendChild(form);
   }
 
-  adaptFormForEditing() {
+  adaptFormForEditing(): void {
     const row4 = document.querySelector('.row-4');
+    if (!(row4 instanceof HTMLElement)) return;
     const submitBtn = row4.querySelector('.btn-primary');
+    if (!(submitBtn instanceof HTMLButtonElement)) return;
     submitBtn.remove();
 
     const actionsDiv = document.createElement('div');
@@ -236,7 +244,7 @@ class ModalRenderer {
     row4.appendChild(actionsDiv);
   }
 
-  createSubmitButton() {
+  createSubmitButton(): HTMLButtonElement {
     const btnAdd = document.createElement('button');
     btnAdd.setAttribute('type', 'submit');
     btnAdd.setAttribute('form', 'form-task');
@@ -245,8 +253,9 @@ class ModalRenderer {
     return btnAdd;
   }
 
-  showTaskModal(type) {
+  showTaskModal(type?: string): void {
     const modal = document.querySelector('#modal-task');
+    if (!(modal instanceof HTMLDialogElement)) return;
     const listItems = modal.querySelectorAll('li.active');
     const submitBtn = modal.querySelector('button[type="submit"]');
 
@@ -255,6 +264,7 @@ class ModalRenderer {
     if (!submitBtn) {
       const row4 = document.querySelector('.row-4');
       const actions = document.querySelector('.actions');
+      if (!actions || !row4) return;
       actions.remove();
       const btnAdd = this.createSubmitButton();
       row4.appendChild(btnAdd);
@@ -267,13 +277,15 @@ class ModalRenderer {
     }
   }
 
-  closeTaskModal() {
+  closeTaskModal(): void {
     const modal = document.querySelector('#modal-task');
+    if (!(modal instanceof HTMLDialogElement)) return;
     modal.close();
   }
 
-  closeOnOutsideClick(e) {
+  closeOnOutsideClick(e: MouseEvent): boolean | void {
     const modal = document.querySelector('#modal-task');
+    if (!(modal instanceof HTMLDialogElement)) return;
     const dialogDimensions = modal.getBoundingClientRect();
     const visiblePickers = modal.querySelectorAll('.visible');
     const datePickers = document.querySelectorAll('.air-datepicker');

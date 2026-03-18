@@ -1,15 +1,20 @@
 import { DEFAULT_LISTS, PRIORITY } from '../../utils/Constants';
 import { format, parse, isBefore, startOfToday } from 'date-fns';
 import FilterService from '../../services/FilterService';
+import type Task from '../../domain/Task';
+import type List from '../../domain/List';
 
 class TaskRenderer {
-  constructor(container) {
+  container: HTMLDivElement;
+
+  constructor(container: HTMLDivElement) {
     this.container = container;
   }
 
-  renderListTitle(listId) {
-    const main = document.querySelector('.main');
-    const h1 = document.querySelector('#list-title');
+  renderListTitle(listId: string): void {
+    const main = document.querySelector<HTMLElement>('.main');
+    const h1 = document.querySelector<HTMLHeadingElement>('#list-title');
+    if (!h1 || !main) return;
     h1.textContent = listId;
 
     if (listId === DEFAULT_LISTS.TODAY.title) {
@@ -22,7 +27,14 @@ class TaskRenderer {
     }
   }
 
-  renderTask(id, title, deadlineDate, priority, list, isChecked) {
+  renderTask(
+    id: string,
+    title: string,
+    deadlineDate: string,
+    priority: string,
+    list: string,
+    isChecked: boolean,
+  ): HTMLLIElement {
     const li = document.createElement('li');
     li.setAttribute('data-id', id);
     li.className = 'task-list-item';
@@ -87,57 +99,68 @@ class TaskRenderer {
     return li;
   }
 
-  renderTaskList(tasks) {
-    const taskList = document.querySelector('.task-list');
-    const customLists = JSON.parse(localStorage.getItem('lists')) || [];
+  renderTaskList(tasks: Task[]): void {
+    const taskList = document.querySelector<HTMLElement>('.task-list');
+    if (!taskList) return;
+    const raw = localStorage.getItem('lists');
+    const customLists = raw ? JSON.parse(raw) : [];
+
     this.cleanTaskList(taskList);
     tasks.forEach((task) => {
       const customList = FilterService.defineCustomList(task, customLists);
       const li = this.renderTask(
-        task._id,
+        task._id.toString(),
         task.title,
-        task.deadlineDate,
-        task.priority,
-        customList,
+        task.deadlineDate ?? '',
+        task.priority ?? '',
+        customList ?? '',
         task.completed,
       );
       taskList.appendChild(li);
     });
   }
 
-  cleanTaskList(listEl) {
+  cleanTaskList(listEl: HTMLElement): void {
     listEl.innerHTML = '';
   }
 
-  cleanListTitle() {
+  cleanListTitle(): void {
     const titleEl = document.querySelector('#list-title');
     const dateEl = document.querySelector('#todays-date');
+    if (!titleEl || !dateEl) return;
     titleEl.textContent = '';
     if (dateEl) dateEl.textContent = '';
   }
 
-  highlightPriorityChoice() {
-    const priorityInput = document.querySelector('#priority');
-    const priorityPicker = document.querySelector('.priority-picker');
+  highlightPriorityChoice(): void {
+    const priorityInput = document.querySelector<HTMLInputElement>('#priority');
+    const priorityPicker =
+      document.querySelector<HTMLElement>('.priority-picker');
+    if (!priorityInput || !priorityPicker) return;
     const listItems = priorityPicker.querySelectorAll('li');
     listItems.forEach((item) => item.classList.remove('active'));
 
     Object.values(PRIORITY).forEach((item) => {
       if (priorityInput.value === item) {
         const priorityVal = item.toLowerCase();
-        const li = priorityPicker.querySelector(`#${priorityVal}-priority`);
+        const li = priorityPicker.querySelector<HTMLLIElement>(
+          `#${priorityVal}-priority`,
+        );
+        if (!li) return;
         li.classList.add('active');
       }
     });
   }
 
-  highlightListChoice(customListArr) {
-    const listInput = document.querySelector('#list');
-    const listPicker = document.querySelector('.list-picker');
+  highlightListChoice(customListArr: List[]): void {
+    const listInput = document.querySelector<HTMLInputElement>('#list');
+    const listPicker = document.querySelector<HTMLElement>('.list-picker');
+    if (!listInput || !listPicker) return;
+
     const listItems = listPicker.querySelectorAll('li');
     listItems.forEach((item) => item.classList.remove('active'));
 
-    customListArr.forEach((listObj) => {
+    customListArr.forEach((listObj: { title: string }) => {
       if (
         listObj.title &&
         listInput.value.toLowerCase() === listObj.title.toLowerCase()
@@ -150,7 +173,7 @@ class TaskRenderer {
     });
   }
 
-  init() {
+  init(): void {
     const main = document.createElement('div');
     main.className = 'main';
 

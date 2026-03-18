@@ -2,14 +2,20 @@ import { DEFAULT_LISTS, LIST_TYPE } from '../../utils/Constants';
 import logoSvg from '../../assets/img/logo.svg';
 import iconSidebar from '../../assets/img/icon-sidebar.svg';
 
+type List =
+  | { title: string; svgPath: string }
+  | { title: string; markerColor: string };
+
 // Pure sidebar display logic, no business rules
 class SidebarRenderer {
-  constructor(container, selector) {
+  container: HTMLDivElement;
+  sidebar!: HTMLElement;
+
+  constructor(container: HTMLDivElement) {
     this.container = container;
-    this.sidebar = document.querySelector(selector);
   }
 
-  renderSidebarToggler() {
+  renderSidebarToggler(): void {
     const button = document.createElement('button');
     button.setAttribute('type', 'button');
     button.className = 'btn-sidebar';
@@ -20,10 +26,11 @@ class SidebarRenderer {
     this.container.appendChild(button);
   }
 
-  renderGreeting(userName) {
-    const greetingCont = document.querySelector('.greeting');
+  renderGreeting(userName?: string | null): void {
+    const greetingCont = document.querySelector<HTMLElement>('.greeting');
+    if (!greetingCont) return;
     const h3 = document.createElement('h3');
-    userName ? (h3.textContent = `Hey, ${userName}`) : (h3.textContent = 'Hey');
+    h3.textContent = userName ? `Hey, ${userName}` : 'Hey';
     const logo = document.createElement('img');
     logo.src = logoSvg;
 
@@ -31,50 +38,54 @@ class SidebarRenderer {
     greetingCont.appendChild(h3);
   }
 
-  renderLists(lists, listType) {
-    let listTypeEl;
-    let h3;
-    let ulForCustom;
+  renderLists(lists: Record<string, List> | List[], listType: string): void {
+    const selector =
+      listType === LIST_TYPE.DEFAULT ? '.default-list' : '.custom-list';
 
-    listType === LIST_TYPE.DEFAULT
-      ? (listTypeEl = document.querySelector('.default-list'))
-      : (listTypeEl = document.querySelector('.custom-list'));
+    const listTypeEl = document.querySelector<HTMLElement>(selector);
+    if (!listTypeEl) return;
+
+    listTypeEl.innerHTML = '';
+
+    let ul: HTMLUListElement | null = null;
 
     if (listType === LIST_TYPE.CUSTOM) {
-      h3 = document.createElement('h3');
+      const h3 = document.createElement('h3');
       h3.textContent = 'My lists';
 
-      ulForCustom = document.createElement('ul');
-      listTypeEl.appendChild(h3);
-      listTypeEl.appendChild(ulForCustom);
+      ul = document.createElement('ul');
+      listTypeEl.append(h3, ul);
     }
 
-    const listsArr = Object.values(lists) || lists;
+    const container = ul ?? listTypeEl;
 
-    listsArr.forEach((list) => {
+    const listsArr = Array.isArray(lists) ? lists : Object.values(lists);
+
+    for (const list of Object.values(listsArr)) {
       const li = document.createElement('li');
       const button = document.createElement('button');
-      const attrVal = list.title.toLowerCase().replace(' ', '-');
-      button.setAttribute('data-list', attrVal);
+
+      const attrVal = list.title.toLowerCase().replace(/\s+/g, '-');
+      button.dataset.list = attrVal;
+
       const div = document.createElement('div');
 
       const svgns = 'http://www.w3.org/2000/svg';
       const svg = document.createElementNS(svgns, 'svg');
 
-      if (listType === LIST_TYPE.DEFAULT) {
+      if (listType === LIST_TYPE.DEFAULT && 'svgPath' in list) {
         svg.setAttribute('width', '20');
         svg.setAttribute('height', '20');
         svg.setAttribute('viewBox', '0 0 20 20');
-        svg.setAttribute('fill', 'none');
 
         const path = document.createElementNS(svgns, 'path');
         path.setAttribute('d', list.svgPath);
         svg.appendChild(path);
-      } else if (listType === LIST_TYPE.CUSTOM) {
+      } else if ('markerColor' in list) {
         svg.setAttribute('width', '12');
         svg.setAttribute('height', '12');
         svg.setAttribute('viewBox', '0 0 12 12');
-        svg.setAttribute('fill', 'none');
+
         const circle = document.createElementNS(svgns, 'circle');
         circle.setAttribute('cx', '6');
         circle.setAttribute('cy', '6');
@@ -83,22 +94,18 @@ class SidebarRenderer {
         svg.appendChild(circle);
       }
 
-      const para = document.createElement('p');
-      para.textContent = list.title;
+      const title = document.createElement('p');
+      title.textContent = list.title;
 
       const counter = document.createElement('span');
       counter.textContent = '0';
 
-      div.appendChild(svg);
-      div.appendChild(para);
-      button.appendChild(div);
-      button.appendChild(counter);
+      div.append(svg, title);
+      button.append(div, counter);
       li.appendChild(button);
 
-      listType === LIST_TYPE.DEFAULT
-        ? listTypeEl.appendChild(li)
-        : ulForCustom.appendChild(li);
-    });
+      container.appendChild(li);
+    }
 
     if (listType === LIST_TYPE.CUSTOM) {
       const addBtn = this.createAddListBtn();
@@ -106,7 +113,7 @@ class SidebarRenderer {
     }
   }
 
-  createSingleList(listTitle, markerColor) {
+  createSingleList(listTitle: string, markerColor: string): HTMLLIElement {
     const li = document.createElement('li');
     const button = document.createElement('button');
     const attrVal = listTitle.toLowerCase().replace(' ', '-');
@@ -142,7 +149,7 @@ class SidebarRenderer {
     return li;
   }
 
-  createAddListBtn() {
+  createAddListBtn(): HTMLButtonElement {
     const addBtn = document.createElement('button');
     addBtn.setAttribute('type', 'button');
     addBtn.className = 'btn-add-list';
@@ -169,21 +176,24 @@ class SidebarRenderer {
     return addBtn;
   }
 
-  updateListCounter(listId, count) {
+  updateListCounter(listId: string, count: string): void {
     const attrName = listId.toLowerCase().replace(' ', '-');
     const counterEl = document.querySelector(`[data-list="${attrName}"] span`);
     if (counterEl) counterEl.textContent = count;
   }
 
-  setActiveList(listId) {
+  setActiveList(listId: string): void {
     const allLists = document.querySelectorAll('[data-list]');
     const attrName = listId.toLowerCase().replace(' ', '-');
     allLists.forEach((list) => list.classList.remove('active'));
-    const list = document.querySelector(`[data-list="${attrName}"]`);
+    const list = document.querySelector<HTMLLIElement>(
+      `[data-list="${attrName}"]`,
+    );
+    if (!list) return;
     list.classList.add('active');
   }
 
-  createAddListInput() {
+  createAddListInput(): HTMLFormElement {
     const form = document.createElement('form');
     form.id = 'form-custom-list';
     const div = document.createElement('div');
@@ -209,12 +219,13 @@ class SidebarRenderer {
     return form;
   }
 
-  removeAddListInput() {
-    const form = document.querySelector('#form-custom-list');
+  removeAddListInput(): void {
+    const form = document.querySelector<HTMLFormElement>('#form-custom-list');
+    if (!form) return;
     form.remove();
   }
 
-  init(userName) {
+  init(userName: string | null): void {
     const sidebar = document.createElement('div');
     sidebar.className = 'sidebar';
     const greeting = document.createElement('div');
@@ -229,6 +240,8 @@ class SidebarRenderer {
     sidebar.appendChild(greeting);
     sidebar.appendChild(defaultList);
     sidebar.appendChild(customList);
+    this.sidebar = sidebar;
+    
     this.container.appendChild(sidebar);
 
     this.renderGreeting(userName);
