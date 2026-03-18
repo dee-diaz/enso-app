@@ -7,7 +7,7 @@ class List {
   markerColor: string;
   _creationDate: string;
 
-  constructor(title: string, color: string) {
+  constructor(title: string, color?: string) {
     this._id = Math.random()
       .toString(36)
       .substring(2, 6 + 2);

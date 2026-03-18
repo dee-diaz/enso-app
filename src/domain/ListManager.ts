@@ -21,7 +21,7 @@ class ListManager {
     return this.lists.find((list) => list._id === listId);
   }
 
-  saveList(title: string, color: string): List {
+  saveList(title: string, color?: string): List {
     const newList = new List(title, color);
     this.lists.push(newList);
     this.storage.save('lists', this.lists);
