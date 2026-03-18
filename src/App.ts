@@ -210,10 +210,6 @@ class App {
               container.appendChild(addBtn);
             }
           });
-
-          // listForm.addEventListener('click', () => {
-          //   this.formHandler.closeOnOutsideClick();
-          // });
         }
       }
 
