@@ -69,7 +69,7 @@ class App {
 
     mergedLists.forEach((list: { title: string }) => {
       const count = FilterService.filterByList(tasks, list.title).length;
-      this.sidebar.updateListCounter(list.title, count);
+      this.sidebar.updateListCounter(list.title, count.toString());
     });
   }
 
@@ -283,7 +283,7 @@ class App {
         if (task.scheduleDate != null) scheduleInput.value = task.scheduleDate;
         if (task.deadlineDate != null) deadlineInput.value = task.deadlineDate;
         if (task.priority != null) priorityInput.value = task.priority;
-        listInput.value = customList;
+        if (customList) listInput.value = customList;
 
         if (priorityInput.value) this.taskRenderer.highlightPriorityChoice();
         if (listInput.value) this.taskRenderer.highlightListChoice(customLists);

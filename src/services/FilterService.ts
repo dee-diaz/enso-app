@@ -1,8 +1,14 @@
 // Translates UI filters → business queries
-import { DEFAULT_LISTS } from '../utils/Constants.ts';
+import { DEFAULT_LISTS } from '../utils/Constants';
+import type Task from '../domain/Task';
+
+type CustomList = {
+  title: string;
+  markerColor: string;
+};
 
 class FilterService {
-  static filterByList(tasks, listName) {
+  static filterByList(tasks: Task[], listName: string): Task[] {
     let filteredList;
     if (listName === DEFAULT_LISTS.COMPLETED.title) {
       filteredList = tasks.filter((task) => task.lists.includes(listName));
@@ -16,14 +22,17 @@ class FilterService {
     return filteredList;
   }
 
-  static defineCustomList(task, customListsArr = []) {
-    if (!Array.isArray(customListsArr)) return null;
-    const taskListArr = task.lists || [];
+  static defineCustomList(
+    task: Task,
+    customListsArr: CustomList[] = [],
+  ): string | null {
+    const taskListArr = task.lists;
+
     const customListTitles = customListsArr.map((item) => item.title);
-    const customList = taskListArr.filter((item) =>
-      customListTitles.includes(item),
-    );
-    return customList[0] || null;
+
+    const found = taskListArr.find((item) => customListTitles.includes(item));
+
+    return found ?? null;
   }
 }
 
