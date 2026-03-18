@@ -42,7 +42,7 @@ class TaskManager {
     deadlineDate: string,
     priority: string,
     list: string,
-    id: string,
+    id?: string,
   ): Task {
     const today = format(new Date(), 'dd/MM/yyyy');
     const newTask = new Task(
