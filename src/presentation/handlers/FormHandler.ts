@@ -1,5 +1,5 @@
 import { PRIORITY } from '../../utils/Constants';
-import ValidationService from '../../services/ValidationService.js';
+import ValidationService from '../../services/ValidationService';
 import { TaskFormValues } from '../../types/formValues';
 
 // Form interaction management
