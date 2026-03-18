@@ -38,7 +38,7 @@ class App {
     this.firstStart = this.checkFirstStart();
     this.userName = null;
     this.container = document.querySelector('#content') as HTMLDivElement;
-    this.sidebar = new SidebarRenderer(this.container, '.sidebar');
+    this.sidebar = new SidebarRenderer(this.container);
     this.createInitialCustomLists();
     this.modal = new ModalRenderer(this.container);
     this.modalHandler = new ModalHandler(this.modal, (userName: string) => {
