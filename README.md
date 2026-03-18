@@ -5,7 +5,6 @@ A task-focused productivity app built with **TypeScript**, **Webpack**, and a la
 The app supports day-to-day planning with task creation, editing, completion tracking, custom lists, date-based scheduling, and persistent local storage.
 
 **Live demo:** https://enso-task-manager.netlify.app/
-**Issues:** https://github.com/dee-diaz/enso-app/issues
 
 ![Project screenshot](screenshot.png)
 ![Project screenshot](screenshot-2.png)
@@ -22,7 +21,6 @@ The app supports day-to-day planning with task creation, editing, completion tra
 - [Available Scripts](#available-scripts)
 - [How Data Persistence Works](#how-data-persistence-works)
 - [Code Quality](#code-quality)
-- [Future Improvements](#future-improvements)
 
 ---
 
