@@ -1,7 +1,13 @@
 // Reusable priority selector UI component
-import { PRIORITY } from '../../utils/Constants.ts';
+import { PRIORITY } from '../../utils/Constants';
+import List from '../../domain/List';
 
-function createDropdown(inputId, customListArr) {
+type DropdownType = 'priority' | 'list';
+
+function createDropdown(
+  inputId: DropdownType,
+  customListArr: List[],
+): HTMLDivElement {
   const dropdownContainer = document.createElement('div');
   dropdownContainer.className = `${inputId}-picker`;
   const title = document.createElement('h5');
@@ -76,12 +82,13 @@ function createDropdown(inputId, customListArr) {
   return dropdownContainer;
 }
 
-
-function initDropdowns(customListArr) {
+function initDropdowns(customListArr: List[]): void {
   const containerPriority = document.querySelector('.row-3');
   const containerList = document.querySelector('.row-4');
 
-  const priorityPicker = createDropdown('priority');
+  if (!containerPriority || !containerList) return;
+
+  const priorityPicker = createDropdown('priority', customListArr);
   const listPicker = createDropdown('list', customListArr);
 
   containerPriority.appendChild(priorityPicker);

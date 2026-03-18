@@ -6,7 +6,7 @@ import 'air-datepicker/air-datepicker.css';
 function initDatePickers() {
   const baseOptions = {
     locale: localeEn,
-    container: document.querySelector('#modal-task'),
+    container: document.querySelector('#modal-task') as HTMLElement,
     classes: 'custom-calendar-theme',
     dateFormat: 'dd/MM/yyyy',
     autoClose: true,
@@ -14,12 +14,12 @@ function initDatePickers() {
 
   new AirDatepicker('#task-schedule', {
     ...baseOptions,
-    position: 'bottom left',
+    position: 'bottom left' as const,
   });
 
   new AirDatepicker('#task-deadline', {
     ...baseOptions,
-    position: 'bottom right',
+    position: 'bottom right' as const,
   });
 }
 
